@@ -24,7 +24,7 @@
 
     <div style="background-color: white; padding: 1.5rem; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 2rem;">
       <form action="/dogs/search" method="GET" style="display: flex; gap: 0.5rem;">
-        <input type="text" name="query" placeholder="Search by name or breed..." value="<%= searchQuery %>" style="flex: 1; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
+        <input type="text" name="query" placeholder="Search by name or breed..." value="<%= searchQuery %>" style="flex: 1; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;" required>
         <button type="submit" class="btn">Search</button>
         <% if (searchQuery) { %>
           <a href="/dogs" class="btn btn-secondary">Clear</a>

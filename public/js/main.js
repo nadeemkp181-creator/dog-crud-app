@@ -55,16 +55,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        window.alert('Delete failed. Please try again.');
-        console.error('Delete failed:', response.status, errorText);
-        return;
-      }
+    if (!response.ok) {
+  const result = await response.json();
+  window.alert(result.message || "Request failed.");
+  return;
+}
 
       const result = await response.json();
       if (!result.success) {
-        window.alert(result.message || 'Delete failed.');
+        window.alert(result.message);
         return;
       }
 
@@ -98,13 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      window.alert('Request failed. Please try again.');
-      console.error('Form submit failed:', response.status, errorText);
-      return;
-    }
-
+   if (!response.ok) {
+  const result = await response.json();
+  window.alert(result.message || "Request failed.");
+  return;
+}
     const result = await response.json();
     if (!result.success) {
       window.alert(result.message || 'Request failed.');

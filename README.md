@@ -24,6 +24,20 @@
    MONGO_DB=your_database_name
    ```
 
+## Features 
+   
+   Add Dog
+   Update Dog
+   Delete Dog 
+   View Specific Dog
+   List all the Dogs
+   Validations 
+
+## Additional Features
+     
+   Search Bar by Dog and Breed
+   Sort by dog name
+
 ### Development Mode (with auto-reload)
 ```bash
 npm run dev

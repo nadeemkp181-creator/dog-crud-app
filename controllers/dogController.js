@@ -93,12 +93,12 @@ exports.createDog = async (req, res) => {
 
     let findexistingdog = await Dog.find({ name : name });
 
-    if(findexistingdog.length > 0){
-          return res.status(400).render('dogs/create', {
-        title: 'Add New Dog',
-        error: 'This dog already exist in the list'
-      });
-    }   
+ if (findexistingdog.length > 0) {
+  return res.status(400).json({
+    success: false,
+    message: "Dog already exists."
+  });
+}
 
     let breedArray = [];
     if (breeds && breeds.trim() !== '') {
