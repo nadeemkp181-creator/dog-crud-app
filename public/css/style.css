@@ -158,6 +158,22 @@ table tr:hover {
   white-space: normal;
 }
 
+.sort-link {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.5rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.sort-icon {
+  font-size: 0.9rem;
+}
+
+.sort-link:hover .sort-icon {
+  color: #3498db;
+}
+
 .alert {
   padding: 1rem;
   margin-bottom: 1rem;

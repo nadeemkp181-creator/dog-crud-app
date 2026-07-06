@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title></title>
   <link rel="stylesheet" href="/css/style.css">
+  <script defer src="/js/main.js"></script>
 </head>
 <body>
   <header>
@@ -23,7 +24,7 @@
       </div>
     <% } %>
 
-    <form action="/dogs" method="POST">
+    <form action="/dogs" method="POST" class="ajax-form">
       <div class="form-group">
         <label for="name">Name</label>
         <input type="text" id="name" name="name" required>

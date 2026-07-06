@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dogs List</title>
   <link rel="stylesheet" href="/css/style.css">
+  <script defer src="/js/main.js"></script>
 </head>
 <body>
   <header>
@@ -15,6 +16,10 @@
   </header>
 
   <div class="container">
+    <% const currentSortBy = typeof sortBy !== 'undefined' ? sortBy : 'createdAt'; %>
+    <% const currentSortDir = typeof sortDir !== 'undefined' ? sortDir : 'desc'; %>
+    <% const nextSortDir = currentSortDir === 'asc' ? 'desc' : 'asc'; %>
+
     <h1><%= title %></h1>
 
     <div style="background-color: white; padding: 1.5rem; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 2rem;">
@@ -48,7 +53,12 @@
       <table style="margin-top: 1rem;">
         <thead>
           <tr>
-            <th>Name</th>
+            <th>
+              Name
+              <a class="sort-link" href="#" data-sort="name" data-dir="<%= currentSortDir %>">
+                <span class="sort-icon"><%= currentSortBy === 'name' ? (currentSortDir === 'asc' ? '▲' : '▼') : '⇅' %></span>
+              </a>
+            </th>
             <th>Breed</th>
             <th>Actions</th>
           </tr>
@@ -61,8 +71,8 @@
               <td class="actions-cell">
                 <a href="/dogs/<%= dog._id %>" class="btn">View</a>
                 <a href="/dogs/<%= dog._id %>/edit" class="btn btn-secondary">Edit</a>
-                <form action="/dogs/<%= dog._id %>/delete" method="POST">
-                  <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                <form action="/dogs/<%= dog._id %>/delete" method="POST" class="delete-form">
+                  <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
               </td>
             </tr>

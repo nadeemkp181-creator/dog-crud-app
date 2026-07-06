@@ -24,11 +24,12 @@
 
     <div>
       <a href="/dogs/<%= dog._id %>/edit" class="btn">Edit</a>
-      <form action="/dogs/<%= dog._id %>/delete" method="POST" style="display: inline;">
-        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this dog?')">Delete</button>
+      <form action="/dogs/<%= dog._id %>/delete" method="POST" class="delete-form" style="display: inline;">
+        <button type="submit" class="btn btn-danger">Delete</button>
       </form>
       <a href="/dogs" class="btn btn-secondary">Back to List</a>
     </div>
   </div>
+  <script defer src="/js/main.js"></script>
 </body>
 </html>

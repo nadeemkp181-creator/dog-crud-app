@@ -24,8 +24,6 @@
    MONGO_DB=your_database_name
    ```
 
-## Usage
-
 ### Development Mode (with auto-reload)
 ```bash
 npm run dev
@@ -72,11 +70,5 @@ MONGO_URI=mongodb+srv://your_username:your_password@cluster.mongodb.net/?appName
 MONGO_DB=your_database_name
 ```
 
-## Development
 
-The project uses nodemon for development. Changes to files automatically restart the server.
-
-```bash
-npm run dev
-```
 

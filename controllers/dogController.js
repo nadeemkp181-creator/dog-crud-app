@@ -2,10 +2,21 @@ const Dog = require('../models/Dog');
 
 exports.getAllDogs = async (req, res) => {
   try {
-    const dogs = await Dog.find().sort({ createdAt: -1 });
-    res.render('dogs/index', {title: 'Dogs List',
+
+        console.log("Received Data:", req.body);
+
+    const validSortFields = ['name', 'createdAt'];
+    const sortField = validSortFields.includes(req.query.sort) ? req.query.sort : 'createdAt';
+    const sortDir = req.query.dir === 'asc' ? 1 : -1;
+
+    console.log("Sort Field:", sortField, "Sort Direction:", sortDir);
+    const dogs = await Dog.find().sort({ [sortField]: sortDir });
+    res.render('dogs/index', {
+      title: 'Dogs List',
       dogs: dogs,
-      searchQuery: ''
+      searchQuery: '',
+      sortBy: sortField,
+      sortDir: req.query.dir === 'asc' ? 'asc' : 'desc'
     });
   } catch (error) {
     res.status(500).render('error', {
@@ -23,17 +34,24 @@ exports.searchDogs = async (req, res) => {
     }
 
     const searchTerm = query.trim();
+    const validSortFields = ['name', 'createdAt'];
+    const sortField = validSortFields.includes(req.query.sort) ? req.query.sort : 'createdAt';
+    const sortDir = req.query.dir === 'asc' ? 1 : -1;
+
     const dogs = await Dog.find({
       $or: [
-        { name: { $regex: searchTerm }},
+        { name: { $regex: searchTerm, }},
         { breeds: { $regex: searchTerm }}
       ]
-    }).sort({ createdAt: -1 });
+    }).sort({ [sortField]: sortDir });
+    console.log(dogs);
 
     res.render('dogs/index', {
       title: 'Search Results',
       dogs: dogs,
-      searchQuery: searchTerm
+      searchQuery: searchTerm,
+      sortBy: sortField,
+      sortDir: req.query.dir === 'asc' ? 'asc' : 'desc'
     });
   } catch (error) {
     res.status(500).render('error', {
@@ -71,12 +89,7 @@ exports.createDog = async (req, res) => {
   try {
     const { name, breeds } = req.body; 
 
-    if (!name) {
-      return res.status(400).render('dogs/create', {
-        title: 'Add New Dog',
-        error: 'Please provide a name'
-      });
-    }
+    console.log("Received Data:", req.body);
 
     let findexistingdog = await Dog.find({ name : name });
 
@@ -96,14 +109,26 @@ exports.createDog = async (req, res) => {
       }
     }
 
+
     const newDog = new Dog({
       name,
       breeds: breedArray
     });
 
+        console.log("New Dog Data:", newDog);
+
+
     await newDog.save();
+    if (req.xhr || req.headers['x-requested-with'] === 'XMLHttpRequest' || req.accepts('json')) {
+      return res.json({ success: true, redirect: `/dogs/${newDog._id}` });
+    }
+
     res.redirect(`/dogs/${newDog._id}`);
   } catch (error) {
+    if (req.xhr || req.headers['x-requested-with'] === 'XMLHttpRequest' || req.accepts('json')) {
+      return res.status(500).json({ success: false, message: 'Failed to create dog' });
+    }
+
     res.status(500).render('dogs/create', {
       title: 'Add New Dog',
       error: 'Failed to create dog'
@@ -150,11 +175,22 @@ exports.updateDog = async (req, res) => {
     );
 
     if (!dog) {
-      return res.status(404).json({ title: 'Dog Not Found' });
+      if (req.xhr || req.headers['x-requested-with'] === 'XMLHttpRequest' || req.accepts('json')) {
+        return res.status(404).json({ success: false, message: 'Dog not found' });
+      }
+      return res.status(404).render('404', { title: 'Dog Not Found' });
+    }
+
+    if (req.xhr || req.headers['x-requested-with'] === 'XMLHttpRequest' || req.accepts('json')) {
+      return res.json({ success: true, redirect: `/dogs/${id}` });
     }
 
     res.redirect(`/dogs/${id}`);
   } catch (error) {
+    if (req.xhr || req.headers['x-requested-with'] === 'XMLHttpRequest' || req.accepts('json')) {
+      return res.status(500).json({ success: false, message: 'Failed to update dog' });
+    }
+
     res.status(500).render('error', { title: 'Error',
       message: 'Failed to update dog'
     });
@@ -169,10 +205,18 @@ exports.deleteDog = async (req, res) => {
     if (!dog) {
       return res.status(404).json({ title: 'Dog Not Found' });
     }
+    if (req.xhr || req.headers['x-requested-with'] === 'XMLHttpRequest' || req.accepts('json')) {
+      return res.json({ success: true });
+    }
+
     res.redirect('/dogs');
   } catch (error) {
+    if (req.xhr || req.headers['x-requested-with'] === 'XMLHttpRequest' || req.accepts('json')) {
+      return res.status(500).json({ success: false, message: 'Failed to delete dog' });
+    }
+
     res.status(500).render('error', {
-title: 'Error',
+      title: 'Error',
       message: 'Failed to delete dog'
     });
   }
