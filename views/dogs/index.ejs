@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dogs List</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/dogs">Dogs List</a>
+      <a href="/dogs/new">Add Dog</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1><%= title %></h1>
+
+    <div style="background-color: white; padding: 1.5rem; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+      <form action="/dogs/search" method="GET" style="display: flex; gap: 0.5rem;">
+        <input type="text" name="query" placeholder="Search by name or breed..." value="<%= searchQuery %>" style="flex: 1; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
+        <button type="submit" class="btn">Search</button>
+        <% if (searchQuery) { %>
+          <a href="/dogs" class="btn btn-secondary">Clear</a>
+        <% } %>
+      </form>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <div>
+        <% if (searchQuery) { %>
+          <p style="color: #666;">Found <strong><%= dogs.length %></strong> dog(s) matching "<%= searchQuery %>"</p>
+        <% } %>
+      </div>
+      <a href="/dogs/new" class="btn">Add New Dog</a>
+    </div>
+
+    <% if (dogs.length === 0) { %>
+      <div style="background-color: #e8f4f8; padding: 2rem; border-radius: 4px; text-align: center;">
+        <% if (searchQuery) { %>
+          <p>No dogs found matching "<%= searchQuery %>". <a href="/dogs">View all dogs</a></p>
+        <% } else { %>
+          <p>No dogs yet. <a href="/dogs/new">Add one now!</a></p>
+        <% } %>
+      </div>
+    <% } else { %>
+      <table style="margin-top: 1rem;">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Breed</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% dogs.forEach(dog => { %>
+            <tr>
+              <td><strong><%= dog.name %></strong></td>
+              <td class="breed-cell"><%= dog.breeds.length > 0 ? dog.breeds.join(', ') : '-' %></td>
+              <td class="actions-cell">
+                <a href="/dogs/<%= dog._id %>" class="btn">View</a>
+                <a href="/dogs/<%= dog._id %>/edit" class="btn btn-secondary">Edit</a>
+                <form action="/dogs/<%= dog._id %>/delete" method="POST">
+                  <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } %>
+  </div>
+</body>
+</html>

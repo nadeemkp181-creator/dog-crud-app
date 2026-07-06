@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/dogs">Dogs List</a>
+      <a href="/dogs/new">Add Dog</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1><%= title %></h1>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="alert alert-error">
+        <%= error %>
+      </div>
+    <% } %>
+
+    <form action="/dogs" method="POST">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="breeds">Breeds (comma-separated)</label>
+        <input type="text" id="breeds" name="breeds">
+      </div>
+
+      <button type="submit" class="btn">Create Dog</button>
+      <a href="/dogs" class="btn btn-secondary">Cancel</a>
+    </form>
+  </div>
+</body>
+</html>
