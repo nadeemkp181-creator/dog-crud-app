@@ -27,12 +27,12 @@
     <form action="/dogs" method="POST" class="ajax-form">
       <div class="form-group">
         <label for="name">Name</label>
-        <input type="text" id="name" name="name" required>
+        <input type="text" id="name" name="name" maxlength="50" required>
       </div>
 
       <div class="form-group">
         <label for="breeds">Breeds (comma-separated)</label>
-        <input type="text" id="breeds" name="breeds">
+        <input type="text" id="breeds" name="breeds" maxlength="200">
       </div>
 
       <button type="submit" class="btn">Create Dog</button>
