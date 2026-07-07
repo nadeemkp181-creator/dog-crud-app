@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title></title>
+  <title><%= title %></title>
   <link rel="stylesheet" href="/css/style.css">
   <script defer src="/js/main.js"></script>
 </head>
@@ -19,24 +19,23 @@
     <h1><%= title %></h1>
 
     <% if (typeof error !== 'undefined' && error) { %>
-      <div class="alert alert-error">
-        <%= error %>
-      </div>
+      <div class="alert alert-error"><%= error %></div>
     <% } %>
 
-    <form action="/dogs" method="POST" class="ajax-form">
+    <form action="/dogs/<%= dog._id %>/edit" method="POST" class="ajax-form">
       <div class="form-group">
         <label for="name">Name</label>
-        <input type="text" id="name" name="name" maxlength="50" required>
+        <input type="text" id="name" name="name" maxlength="50" value="<%= typeof name !== 'undefined' ? name : dog.name %>" required>
       </div>
 
       <div class="form-group">
         <label for="breeds">Breeds (comma-separated)</label>
-        <input type="text" id="breeds" name="breeds" maxlength="200">
+        <input type="text" id="breeds" name="breeds" maxlength="200" value="<%= typeof breeds !== 'undefined' ? breeds : (dog.breeds.length > 0 ? dog.breeds.join(', ') : '') %>" >
+        <small style="display: block; color: #666; margin-top: 0.5rem;">Enter one or more breeds separated by commas (optional)</small>
       </div>
 
-      <button type="submit" class="btn">Create Dog</button>
-      <a href="/dogs" class="btn btn-secondary">Cancel</a>
+      <button type="submit" class="btn">Update Dog</button>
+      <a href="/dogs/<%= dog._id %>" class="btn btn-secondary">Cancel</a>
     </form>
   </div>
 </body>
