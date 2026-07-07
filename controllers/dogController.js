@@ -160,6 +160,17 @@ exports.updateDog = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, breeds } = req.body;
+
+    let findexistingdog = await Dog.find({ name: name });
+
+          console.log("Existing Dogs Found:", findexistingdog);
+
+    if (findexistingdog.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Dog already exists."
+      });
+    }
     
     let breedArray = [];
     if (typeof breeds === 'string') {
